@@ -1,0 +1,163 @@
+//dfs习题
+#include<cstring>
+#include<iostream>
+#include<queue>
+#include<stdlib.h>
+
+using namespace std;
+int A[300][300];
+int steps = 0 ;
+int num1 = 0; 
+int num2 = 0;
+int t = 0;
+class Point{
+	public:
+	   int x;
+	   int y;
+ 
+};
+queue<Point>q1;
+int Next(Point ,int,int,int);
+
+int main()
+{
+	
+	int T;
+	cin>>T;
+	for(int i=0;i<T;i++){
+		int n;
+		cin>>n;
+		memset(A,0,300*300*sizeof(int));
+		steps = 0;
+		
+		num1 = 1;
+		num2 = 0;
+		t = 0;
+		int x1,y1,x2,y2;
+		cin>>x1>>y1;
+		cin>>x2>>y2;
+		A[x1][y1] = 1;
+		Point A;
+		A.x = x1;
+		A.y = y1;
+		q1.push(A);
+		Next(A,n,x2,y2);
+		cout<<steps<<endl;
+		while(!q1.empty()) q1.pop();
+	}
+}
+
+int Next(Point P,int n,int p,int q)
+{
+	
+	
+	Point B;
+	
+	int x = P.x;
+	int y = P.y;
+	if(x == p && y == q){
+	
+		return 0;
+	}
+	A[x][y] = 1;
+	
+	if(t == num1){
+		steps ++;
+		t = 0;
+		num1 = num2;
+		num2 = 0;
+		
+		
+	}
+	
+	t ++;
+	if(x+2<n){
+		if((x+2 == p && y+1 == q)||(x+2 == p && y-1 == q)) {
+			steps ++;
+			return 0;
+		}
+		if(y+1<n && A[x+2][y+1] == 0){
+			A[x+2][y+1] = 1;
+			B.x = x+2;
+			B.y = y+1;
+			q1.push(B);
+			num2 ++;
+			
+		}
+	    if(y-1>=0 && A[x+2][y-1] == 0){
+	    	A[x+2][y-1] = 1;
+	    	B.x = x+2;
+	    	B.y = y-1;
+	    	q1.push(B);
+	    	num2 ++;
+		}
+		
+	}
+	if(x+1<n){
+		if((x+1 == p && y+2 == q)||(x+1 == p && y-2 == q)){
+			steps ++;
+			return 0;
+		
+		}
+		
+		if(y+2<n && A[x+1][y+2] == 0){
+			A[x+1][y+2] = 1;
+			B.x = x+1;
+			B.y = y+2;
+			q1.push(B);
+			num2 ++;
+		}
+	    if(y-2>=0 && A[x+1][y-2] == 0){
+	    	A[x+1][y-2] = 1;
+	    	B.x = x+1;
+	    	B.y = y-2;
+	    	q1.push(B);
+	    	num2 ++;
+		}
+	}
+	if(x-2>=0){
+		if((x-2 == p && y+1 == q)||(x-2 == p && y-1 == q)){
+			steps ++;
+			return 0; 
+		
+		}
+		if(y+1<n && A[x-2][y+1] == 0){
+			A[x-2][y+1] = 1;
+			B.x = x-2;
+			B.y = y+1;
+			q1.push(B);
+			num2 ++;
+		}
+	    if(y-1>=0 && A[x-2][y-1] == 0){
+	    	A[x-2][y-1] = 1;
+	    	B.x = x-2;
+	    	B.y = y-1;
+	    	q1.push(B);
+	    	num2 ++;
+		}
+	}
+	if(x-1>=0){
+		if((x-1 == p && y+2 == q)||(x-1 == p && y-2 == q)){
+	    	steps ++;
+			return 0;
+		}
+		if(y+2<n && A[x-1][y+2] == 0){
+			A[x-1][y+2] = 1;
+			B.x = x-1;
+			B.y = y+2;
+			q1.push(B);
+			num2 ++;
+		}
+	    if(y-2>=0 && A[x-1][y-2] == 0){
+	    	A[x-1][y-2] = 1;
+	    	B.x = x-1;
+	    	B.y = y-2;
+	    	q1.push(B);
+	    	num2 ++;
+		}
+	}
+
+	
+	q1.pop();
+	Next(q1.front(),n,p,q);
+}
